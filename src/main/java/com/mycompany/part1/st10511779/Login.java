@@ -89,7 +89,7 @@ public class Login {
         }else{
             outcome = "The two above conditions have been met and the user has been registered successfully";
         }
-        System.out.println(outcome); // this will output the outcomes for each if statement
+        System.out.println(outcome); // this will output all the outcome messages for each if statement
         return outcome;
         
     }
