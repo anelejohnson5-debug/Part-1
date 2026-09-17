@@ -52,8 +52,7 @@ public class Login {
            
        }else{
            outcome = "Password is not correctly formatted;please ensure that the password contains atleast eight characters, a number and a special character";
- 
-           CheckPassword = false;
+            CheckPassword = false;
            
        }
        return CheckPassword;
