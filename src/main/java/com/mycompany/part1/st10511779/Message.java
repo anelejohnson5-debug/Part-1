@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.file.StandardOpenOption.CREATE;
+import java.util.Random;
 /**
  *
  * @author Anele
@@ -34,12 +35,15 @@ public class Message {
        this.text = text;
    }
    
-   private static String generateID(){ //used to generate ID randomly
-       String id = "";
-       for (int x = 0; x < 10; ++x) {
-           id = id + (int) (Math.random() * 10);
+   public String generateID(){ //used to generate ID randomly
+       Random random = new Random();
+       messageID = String.valueOf(1+ random.nextInt(9));
+       for (int i = 1; i < 10; i ++) {
+           messageID = messageID + random.nextInt(10);
        }
-       return id;
+       return messageID;
+       
+       
    }
    public boolean checkMessagesID(){
        return messageID.length()== 10; //checking if the ID is exactly 10 characters
@@ -82,7 +86,9 @@ public class Message {
         }
         return clean;
     }
-    public String createMessageHash(){
+    public String createMessageHash(){  //tracking code(message hash) which has the first 2 numbers of the ID, a colon
+                                        //the number of the message, and the first and last words in the message
+                                        //the hash will be displayed in CAPS
         int firstSpace = text.indexOf(' ');
         int lastSpace = text.lastIndexOf(' ');
         String firstWord;
