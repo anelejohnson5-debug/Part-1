@@ -105,7 +105,10 @@ public class Message {
         return hash.toUpperCase();
     }
     
-    public String sentMessage(int choice){
+    public String sentMessage(int choice){ // 1-Message successfully sent
+                                           //2- press 0 to delete message
+                                           //3-Message successfully stored
+                                          
         String outcome;
         switch(choice){
             case 1:
@@ -128,7 +131,7 @@ public class Message {
     public int returnTotalMessages(){
         return totalSent;
     }
-    public String details(){
+    public String details(){ //method to display details at the end of the report
         return "Message ID: " + messageID + "\nMessage Hash: " + createMessageHash()
                 + "\nRecipient: " + recipient + "\nMessage: " + text + "\n";
         
@@ -156,7 +159,7 @@ public class Message {
         }
         
     }
-    public static void resetForTests(){
+    public static void resetForTests(){ //reset totals method
         totalSent = 0;
         sentLog = "";
         storedJson = "";
