@@ -26,6 +26,17 @@ public class MessageTest {
         for int (int x = 0; x < 255; ++x) {
         longText = longText + "a";
     }
+        Message testMessage = new Message("0012345678", "27718693002", longText);
+        assertEquals("Message exceeds 250 characters by 6, please reduce the size.", testMessage.checkMessageLength());
+        
+        
+    }
+    
+    @Test
+    public void recipientSuccess() {
+        Message.resetForTests();
+        Message testMessage = new Message("0012345678", "+27718693002", MESSAGE_ONE);
+        assertEquals("Cell phone number successfully captured.", testMessage.checkRecipientCell());
         
     }
     
