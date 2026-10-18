@@ -39,5 +39,48 @@ public class MessageTest {
         assertEquals("Cell phone number successfully captured.", testMessage.checkRecipientCell());
         
     }
+    @Test
+    public void recipientFailure(){
+        Message.resetForTests();
+        Message testMessage = new Message("0012345678", "+27718693002", MESSAGE_TWO);
+        assertEquals("Cell phone number is incorrectly formatted or does not contain an "
+                + " international code. Please correct the number and try again", testMessage.checkRecipientCell());
+        
+    }
+    
+    @Test
+    public void messageHashTestCase1() {
+        Message.resetForTests();
+        Message testMessage = new Message("0012345678", "+27718693002", MESSAGE_ONE);
+        assertEquals("00:0:HITONIGHT", testMessage.createMessageHash());
+    }
+    @Test
+    public void messageHashLoop() {
+        String[] messageIDs = {"0012345678", "1234567890"};
+        String[] messageTexts = {MESSAGE_ONE, MESSAGE_TWO};
+        String[] expectedHashes = {"00:0:HITONIGHT", "12:0:HIPAYMENT"};
+        for (int x = 0; x < messageIDs.length; ++x) {
+            Message.resetForTests();
+            Message testMessage = new Message(messageIDs[x], "+27718693002", messageTexts[x]);
+            assertEquals(expectedHashes[x], testMessage.createMessageHash());
+    }
+    }
+    
+    @Test
+    public void messageIDCreated() {
+        Message.resetForTests();
+        Message testMessage = new Message("+27718693002", MESSAGE_ONE);
+        assertTrue(testMessage.checkMessageID());
+        assertEquals(10, testMessage.getMessageID().length());
+    }
+    @Test
+    public void messageSentOptions() {
+        Message.resetForTests();
+        Message testMessage = new Message("0012345678", "+27718693002", MESSAGE_ONE);
+        assertEquals("Message successfully sent.", testMessage.sentMessage(1));
+        assertEquals("Press 0 to delete the message.", testMessage.sentMessage(2));
+        assertEquals("Message successfully stored.", testMessage.sentMessage(3));
+        
+    }
     
 }
