@@ -28,8 +28,15 @@ public class Message {
    private String recipient;
    private String text;
    
-   public Message(String recipient, String text) {  //constructor thatruns everytime a new message is 
+   public Message(String recipient, String text) {  //constructor that runs everytime a new message is 
        this.messageID = generateID();
+       this.messageNumber = totalSent;
+       this.recipient = recipient;
+       this.text = text;
+   }
+      public Message(String messageID, String recipient, String text) { // 2 constructors, 1 which builds a message for normal use
+                                                                        // and the other lets you test with a predictable ID
+       this.messageID = messageID;
        this.messageNumber = totalSent;
        this.recipient = recipient;
        this.text = text;
@@ -45,15 +52,16 @@ public class Message {
        
        
    }
-   public boolean checkMessagesID(){
+   public boolean checkMessageID(){
        return messageID.length()== 10; //checking if the ID is exactly 10 characters
    }
    
    public String checkMessageLength(){ //makes sure that description is not longer than 250 characters
        if (text.length() <= 250) {
-           return "Message sent";
+           return "Message ready to send.";
    } else {
-    return "Please enter a message of less than 250 characters " + (text.length() - 250 + "; please reduce the size.");
+    return "Message exceeds 250 characters by " + (text.length() - 250)
+        + "; please reduce the size.";
     
        }
        
@@ -69,10 +77,10 @@ public class Message {
            }
        }
        if (valid) {
-           return "Cell phone number successfully captured";
+           return "Cell phone number successfully captured.";
        } else {
            return "Cell phone number is incorrectly formatted or does not contain an international code."
-                   + "Please correct the number and try again.";
+                   + " Please correct the number and try again.";
            
        }
    }
@@ -114,13 +122,18 @@ public class Message {
             case 1:
                 sentLog = sentLog + details() + "\n";
                 totalSent++;
-                outcome = "Message successfully sent";
+                outcome = "Message successfully sent.";
                 break;
             case 2:
-                outcome = "Press 0 to delete the message";
+                outcome = "Press 0 to delete the message.";
                 break;
             default:
-                outcome = "Invalid option";
+                outcome = "Invalid option.";
+                break;
+                case 3:
+                outcome = "Message successfully stored.";
+            break;
+                
                 
         }
         return outcome;

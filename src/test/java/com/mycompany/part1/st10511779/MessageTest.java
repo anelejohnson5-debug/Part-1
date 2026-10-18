@@ -23,11 +23,11 @@ public class MessageTest {
     public void messageLengthFailure() {
         Message.resetForTests();
         String longText = "";
-        for int (int x = 0; x < 255; ++x) {
+        for (int x = 0; x < 255; ++x) {
         longText = longText + "a";
     }
-        Message testMessage = new Message("0012345678", "27718693002", longText);
-        assertEquals("Message exceeds 250 characters by 6, please reduce the size.", testMessage.checkMessageLength());
+        Message testMessage = new Message("0012345678", "08575975889", longText);
+        assertEquals("Message exceeds 250 characters by 5; please reduce the size.", testMessage.checkMessageLength());
         
         
     }
@@ -42,9 +42,9 @@ public class MessageTest {
     @Test
     public void recipientFailure(){
         Message.resetForTests();
-        Message testMessage = new Message("0012345678", "+27718693002", MESSAGE_TWO);
-        assertEquals("Cell phone number is incorrectly formatted or does not contain an "
-                + " international code. Please correct the number and try again", testMessage.checkRecipientCell());
+        Message testMessage = new Message("0012345678", "08575975889", MESSAGE_TWO);
+        assertEquals("Cell phone number is incorrectly formatted or does not contain an"
+                + " international code. Please correct the number and try again.", testMessage.checkRecipientCell());
         
     }
     
@@ -81,6 +81,15 @@ public class MessageTest {
         assertEquals("Press 0 to delete the message.", testMessage.sentMessage(2));
         assertEquals("Message successfully stored.", testMessage.sentMessage(3));
         
+    }
+    @Test
+    public void totalMessageSent() {
+        Message.resetForTests();
+        Message firstMessage = new Message("0012345678", "+27718693002", MESSAGE_ONE);
+        firstMessage.sentMessage(1);
+        Message secondMessage = new Message("1234567890", "08575975889", MESSAGE_TWO);
+        secondMessage.sentMessage(2); // not counted
+        assertEquals(1, firstMessage.returnTotalMessages());
     }
     
 }
