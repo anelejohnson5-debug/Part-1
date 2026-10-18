@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import java.util.Random;
 /**
  *
@@ -127,12 +128,13 @@ public class Message {
             case 2:
                 outcome = "Press 0 to delete the message.";
                 break;
-            default:
-                outcome = "Invalid option.";
-                break;
-                case 3:
+            case 3:
+                storeMessage();
                 outcome = "Message successfully stored.";
             break;
+            default:
+                outcome = "Invalid option.";
+             
                 
                 
         }
@@ -149,7 +151,7 @@ public class Message {
                 + "\nRecipient: " + recipient + "\nMessage: " + text + "\n";
         
     }
-    public void storeMessage(){  //stores the message in storedMessages.json
+    public void storeMessage(){  //stores the message in storedMessages.json    //TechCode, 2024. JSON Tutorial For Beginners - Full Course. Available at: https://www.youtube.com/watch?v=IWcUJLUAO2A [Accessed 18 October 2026].
         String safeText = text.replace('"', '\''); // keeps JSON valid
         if(storedCount > 0){
             storedJson = storedJson + ",\n";
@@ -162,7 +164,7 @@ public class Message {
  
         Path filePath = Paths.get("storedMessages.json");
         try {
-            OutputStream output = new BufferedOutputStream(Files.newOutputStream(filePath, CREATE));
+            OutputStream output = new BufferedOutputStream(Files.newOutputStream(filePath, CREATE, TRUNCATE_EXISTING));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
             String fileText = "[\n" + storedJson + "\n]";
             writer.write(fileText, 0, fileText.length());

@@ -74,7 +74,7 @@ public class Main {
          
          if (menuOption.equals("1")) {
             if (messagesEntered >= maxMessages){
-                System.out.println("You have reached your limit of" + maxMessages + "messages");
+                System.out.println("You have reached your limit of " + maxMessages + "messages");
                 continue;
             }
              System.out.println("Recipient (e.g +277186930020): ");
@@ -89,7 +89,7 @@ public class Main {
             }
              String cellCheckResult = newMessage.checkRecipientCell();
              System.out.println(cellCheckResult);
-             if (!cellCheckResult.equals("Cell phone number successfully captured"))
+             if (!cellCheckResult.equals("Cell phone number successfully captured."))
                  continue;
              System.out.println("Message sent");
              System.out.println("1) Send Message 2) Disregard Message 3) Store Message to send later");
