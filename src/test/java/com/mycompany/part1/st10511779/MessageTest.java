@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
+
+//Emeris School of Computer Science, 2024. PROG5121 Maven Automated testing. Available at: https://youtu.be/oz0Qd5H4Onk [Accessed 18 October 2026].
+
 public class MessageTest {
     static final String MESSAGE_ONE = "Hi Mike, can you join us for dinner tonight?";
     static final String MESSAGE_TWO = "Hi Keegan, did you receive the payment?";
@@ -55,15 +58,25 @@ public class MessageTest {
         assertEquals("00:0:HITONIGHT", testMessage.createMessageHash());
     }
     @Test
+   
     public void messageHashLoop() {
-        String[] messageIDs = {"0012345678", "1234567890"};
-        String[] messageTexts = {MESSAGE_ONE, MESSAGE_TWO};
-        String[] expectedHashes = {"00:0:HITONIGHT", "12:0:HIPAYMENT"};
-        for (int x = 0; x < messageIDs.length; ++x) {
+        for (int x = 0; x < 2; ++x) {
             Message.resetForTests();
-            Message testMessage = new Message(messageIDs[x], "+27718693002", messageTexts[x]);
-            assertEquals(expectedHashes[x], testMessage.createMessageHash());
-    }
+            String messageID;
+            String messageText;
+            String expectedHash;
+            if (x == 0) {
+                messageID = "0012345678";
+                messageText = MESSAGE_ONE;
+                expectedHash = "00:0:HITONIGHT";
+            } else {
+                messageID = "1234567890";
+                messageText = MESSAGE_TWO;
+                expectedHash = "12:0:HIPAYMENT";
+            }
+            Message testMessage = new Message(messageID, "+27718693002", messageText);
+            assertEquals(expectedHash, testMessage.createMessageHash());
+        }
     }
     
     @Test
@@ -91,5 +104,32 @@ public class MessageTest {
         secondMessage.sentMessage(2); // not counted
         assertEquals(1, firstMessage.returnTotalMessages());
     }
+    
+    static final String Part3_MSG_1 = "Did you get the cake?"; //Part 3 Tests // Test data
+    static final String Part3_MSG_2 = "Where are you? You are late! I have asked you to be on time.";
+    static final String Part3_MSG_3 = "Yohoooo, I am at your gate.";
+    static final String Part3_MSG_4 = "It is dinner time!";
+    static final String Part3_MSG_5 = "Ok, I am leaving you.";
+    
+    private Message lateMessage;  //keeping it so that the test can use the hash
+    
+    private void loadPart3TestData(Path tempDir) {
+        Message.resetForTests();
+        Message.setStoredFilePath(tempDir.resolve("storedMessgages.json").toString());
+        Message cakeMessage = new Message("1000000001", "+27834557896", Part3_MSG_1);
+        cakeMessage.sentMessage(1); // message sent
+        lateMessage = new Message("1000000002", "+27838884567", Part3_MSG_2);
+        lateMessage.sentMessage(3); //stored message
+        Message gateMessage = new Message("1000000003", "+27834484567", Part3_MSG_3);
+        gateMessage.sentMessage(2); //disregard message
+        Message dinnerMessage = new Message("0838884567", "0838884567", Part3_MSG_4);
+        dinnerMessage.sentMessage(1); //message sent
+        Message leavingMessage = new Message("1000000005", "+27838884567", Part3_MSG_5);
+        leavingMessage.sentMessage(3); //message stored
+    }
+    
+    
+           
+    
     
 }
