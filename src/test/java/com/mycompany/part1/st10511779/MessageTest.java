@@ -6,7 +6,10 @@ package com.mycompany.part1.st10511779;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Path;
 
 
 //Emeris School of Computer Science, 2024. PROG5121 Maven Automated testing. Available at: https://youtu.be/oz0Qd5H4Onk [Accessed 18 October 2026].
@@ -152,7 +155,16 @@ public class MessageTest {
         assertEquals(1, Message.getStoredTotal());
     }
     
-    
+    @Test
+    public void displayReport(@TempDir Path tempDir) {
+        loadPart3TestData(tempDir);
+        String report = Message.buildReport();
+        assertTrue(report.contains("Message Hash: " + lateMessage.createMessageHash()));
+        assertTrue(report.contains("Recipient: +27838884567"));
+        assertTrue(report.contains("Message: " + Part3_MSG_2));
+        assertTrue(report.contains("Message: " + Part3_MSG_5));
+        
+    }
     
     
            
