@@ -127,6 +127,14 @@ public class MessageTest {
         Message leavingMessage = new Message("1000000005", "+27838884567", Part3_MSG_5);
         leavingMessage.sentMessage(3); //message stored
     }
+    @Test
+    public void sentmessagesArrayCorrectlyPopulated(@TempDir Path tempDir) {
+        loadPart3TestData(tempDir);
+        assertEquals(2, Message.getSentCount());
+        assertEquals(Part3_MSG_1, Message.getSentMessage(0));
+        assertEquals(Part3_MSG_4, Message.getSentMessage(1));
+    }
+    
     
     
            
