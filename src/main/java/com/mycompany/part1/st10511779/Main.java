@@ -29,38 +29,25 @@ public class Main {
         System.out.println("Please enter your cellphone number");
         String CellphoneNum = input.nextLine();
 
-        Login obj = new Login(Username, Surname, Password, Name, CellphoneNum);
-        obj.RegisterUser(Username, Password);
+        Login obj = new Login(Username, Password, CellphoneNum, Name, Surname);
+       
    
         String result = obj.RegisterUser(Username, Password);
        
 
         if (!result.equals("The two above conditions have been met, and the user has been registered successfully\n")) { //this if statement makes the user appear if the user registered correctly
             
-             System.out.println("Please enter your Username");
+            System.out.println("Please enter your Username");
             String EnteredUsername = input.nextLine();
-
             System.out.println("Please enter your password");
             String EnteredPassword = input.nextLine();
-
-            obj.LoginUser(EnteredUsername, EnteredPassword, Username, Password);
-            obj.returnLoginStatus(EnteredUsername, EnteredPassword, Username, Password);
-        } else {
-            System.out.println("Registered user is false, please attempt again");
-        }
-        
-        System.out.println("Please enter your Username");
-        String enteredUsername = input.nextLine();
-        System.out.println("Please enter your password");
-        String enteredPassword = input.nextLine();
-        
-        boolean loggedIn = obj.LoginUser(enteredUsername, enteredPassword, Username, Password);
-        obj.returnLoginStatus(enteredUsername, enteredPassword, Username, Password);
-        
-        if (!loggedIn);{
-        System.out.println("You must log in successfully before sending a message/messages");
-        
-        
+            
+            String status = obj.returnLoginStatus(EnteredUsername, EnteredPassword, Username, Password);
+            if(!status.equals("A successful login")) {
+                System.out.println("You must log in successfully before sending a message/messages");
+                return;
+            }
+  
     }
         System.out.println("Welcome to QuikChat");
         int loadedCount = Message.loadStoredMessages();  //reads storedMessages.json into the arrays
