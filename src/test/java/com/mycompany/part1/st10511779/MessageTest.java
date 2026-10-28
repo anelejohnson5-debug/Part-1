@@ -140,7 +140,14 @@ public class MessageTest {
     @Test
     public void displayLongestMessage(@TempDir Path tempDir) {
         loadPart3TestData(tempDir);
-        assertEquals(Part3_MSG_2, Message,getLongestStoredMessage());
+        assertEquals(Part3_MSG_2, Message.getLongestStoredMessage());
+    }
+    @Test
+    public void searchForMessageID(@TempDir Path tempDir) {
+        loadPart3TestData(tempDir);
+        String[] result = Message.searchByMessageID("0838884567");
+        assertEquals("0838884567", result[0]);
+        assertEquals(Part3_MSG_4, result[1]);
     }
     
     @Test
