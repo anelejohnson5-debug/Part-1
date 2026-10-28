@@ -145,7 +145,14 @@ public class MessageTest {
     }
     
     @Test
-    public void deleteMessageUsingHash
+    public void deleteMessageUsingHash(@TempDir Path tempDir) {
+        loadPart3TestData(tempDir);
+        String result = Message.deleteByHash(lateMessage.createMessageHash());
+        assertEquals("Message: \"" + Part3_MSG_2 + "\" successfully deleted.", result);
+        assertEquals(1, Message.getStoredTotal());
+    }
+    
+    
     
     
            
