@@ -166,6 +166,18 @@ public class MessageTest {
         
     }
     
+    @Test
+    public void storedMessagesReadBackFromJson(@TempDir Path tempDir) {
+        loadPart3TestData(tempDir);   //storing the messages wrote in the JSON file
+        String fileName = tempDir.resolve("storedMessages.json").toString();
+        Message.resetForTests();  //empty out the arrays
+        Message.setStoredFilePath(fileName);
+        assertEquals(2, Message.loadStoredMessages());
+        assertEquals(2, Message.getStoredTotal());
+        assertEquals(Part3_MSG_2, Message.getLongestStoredMessage());
+    }
+        
+    
     
            
     
