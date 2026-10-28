@@ -63,6 +63,10 @@ public class Main {
         
     }
         System.out.println("Welcome to QuikChat");
+        int loadedCount = Message.loadStoredMessages();  //reads storedMessages.json into the arrays
+        if (loadedCount > 0) {
+            System.out.println("Stored messages loaded from storedMessages.json:\n" + Message.displayStoredMessages());
+        }
         System.out.println("How many messages do want to enter?");
         int maxMessages = Integer.parseInt(input.nextLine());
         int messagesEntered = 0;
@@ -74,7 +78,7 @@ public class Main {
          
          if (menuOption.equals("1")) {
             if (messagesEntered >= maxMessages){
-                System.out.println("You have reached your limit of" + maxMessages + "messages");
+                System.out.println("You have reached your limit of " + maxMessages + "messages");  // message to display message limit
                 continue;
             }
              System.out.println("Recipient (e.g +277186930020): ");
@@ -89,7 +93,7 @@ public class Main {
             }
              String cellCheckResult = newMessage.checkRecipientCell();
              System.out.println(cellCheckResult);
-             if (!cellCheckResult.equals("Cell phone number successfully captured"))
+             if (!cellCheckResult.equals("Cell phone number successfully captured."))
                  continue;
              System.out.println("Message sent");
              System.out.println("1) Send Message 2) Disregard Message 3) Store Message to send later");
@@ -99,9 +103,12 @@ public class Main {
              totalMessagesSent = newMessage.returnTotalMessages();
              messagesEntered++;
          } else if (menuOption.equals("2")) {
-             System.out.println("Coming Soon");
+             System.out.println("Coming Soon"); // when 2) is selected nothing should display but "Coming Soon"
+             
          } else if (menuOption.equals("3")){
              break;
+         } else if (menuOption.equals("4")) {
+            storedMessagesMenu(input, Username);         
          } else {
              System.out.println("Invalid menuOption");
          }
@@ -110,6 +117,50 @@ public class Main {
         System.out.println("Total messages sent: " + totalMessagesSent);
         }
         
+    
+        private static void storedMessagesMenu(Scanner input, String sender) {
+            String choice = "";
+            while(!choice.equals("g")){
+                System.out.println("\nStored Messages\n"
+                        + "a) Display sender and recipient of all stored messages\n"
+                        + "b) Display the longest stored message\n"
+                        + "c) Search for a message ID\n"
+                        + "d) Search for all messages for a recipient\n"
+                        + "e) Delete a message using the message hash\n"
+                        + "f) Display a report of all stored messages\n"
+                        + "g) Back to main menu\n");
+                choice = input.nextLine().trim().toLowerCase();
+                if (choice.equals("a")) {
+                    System.out.println(Message.displaySendersAndRecipients(sender));
+                } else if (choice.equals("b")) {
+                    String longest = Message.getLongestStoredMessage();
+                    System.out.println(longest == null ? "No stored messages." : longest);
+                } else if (choice.equals("c")) {
+                    System.out.println("Enter the message ID: ");
+                    String[] found = Message.searchByMessageID(input.nextLine().trim());
+                    System.out.println(found == null ? "Message ID not found."
+                            : "Recipient: " + found[0] + "\nMessage: " + found[1]);
+                } else if (choice.equals("d")) {
+                    System.out.println("Enter the recipient: ");
+                    String[] matches = Message.searchByRecipient(input.nextLine().trim());
+                    if (matches.length == 0) {
+                        System.out.println("No messages found for that recipient.");
+                    }
+                    for (int i = 0; i < matches.length; i++) {
+                        System.out.println(matches[i]);
+                    }
+                } else if (choice.equals("e")) {
+                    System.out.println("Enter the message hash: ");
+                    System.out.println(Message.deleteByHash(input.nextLine()).trim());
+                } else if (choice.equals("f")) {
+                    System.out.println(Message.buildReport());
+                } else if (!choice.equals("g")) {
+                    System.out.println("Invalid option.");
+                    
+                }
+                        
+            }
+        }
          
         
         
