@@ -135,6 +135,17 @@ public class MessageTest {
         assertEquals(Part3_MSG_4, Message.getSentMessage(1));
     }
     
+    @Test
+    public void searchMessagesForRecipient(@TempDir Path tempDir) {
+        loadPart3TestData(tempDir);
+        String[] results = Message.searchByRecipient("+27838884567");
+        assertEquals(2, results.length);
+        assertEquals(Part3_MSG_2, results[0]);
+        assertEquals(Part3_MSG_5, results[1]);
+    }
+    
+    @Test
+    public void deleteMessageUsingHash
     
     
            
