@@ -137,6 +137,11 @@ public class MessageTest {
         assertEquals(Part3_MSG_1, Message.getSentMessage(0));
         assertEquals(Part3_MSG_4, Message.getSentMessage(1));
     }
+    @Test
+    public void displayLongestMessage(@TempDir Path tempDir) {
+        loadPart3TestData(tempDir);
+        assertEquals(Part3_MSG_2, Message,getLongestStoredMessage());
+    }
     
     @Test
     public void searchMessagesForRecipient(@TempDir Path tempDir) {
