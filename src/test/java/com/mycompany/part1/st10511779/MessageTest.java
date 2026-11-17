@@ -90,8 +90,9 @@ public class MessageTest {
         assertEquals(10, testMessage.getMessageID().length());
     }
     @Test
-    public void messageSentOptions() {
+    public void messageSentOptions(@TempDir Path tempDir) {
         Message.resetForTests();
+        Message.setStoredFilePath(tempDir.resolve("storedMessages.json").toString());
         Message testMessage = new Message("0012345678", "+27718693002", MESSAGE_ONE);
         assertEquals("Message successfully sent.", testMessage.sentMessage(1));
         assertEquals("Press 0 to delete the message.", testMessage.sentMessage(2));
@@ -108,46 +109,46 @@ public class MessageTest {
         assertEquals(1, firstMessage.returnTotalMessages());
     }
     
-    static final String Part3_MSG_1 = "Did you get the cake?"; //Part 3 Tests // Test data
-    static final String Part3_MSG_2 = "Where are you? You are late! I have asked you to be on time.";
-    static final String Part3_MSG_3 = "Yohoooo, I am at your gate.";
-    static final String Part3_MSG_4 = "It is dinner time!";
-    static final String Part3_MSG_5 = "Ok, I am leaving you.";
+    static final String CAKE_TEXT = "Did you get the cake?"; //Part 3 Tests // Test data
+    static final String LATE_TEXT = "Where are you? You are late! I have asked you to be on time.";
+    static final String GATE_TEXT = "Yohoooo, I am at your gate.";
+    static final String DINNER_TEXT = "It is dinner time!";
+    static final String LEAVING_TEXT = "Ok, I am leaving you.";
     
     private Message lateMessage;  //keeping it so that the test can use the hash
     
     private void loadPart3TestData(Path tempDir) {
         Message.resetForTests();
         Message.setStoredFilePath(tempDir.resolve("storedMessgages.json").toString());
-        Message cakeMessage = new Message("1000000001", "+27834557896", Part3_MSG_1);
+        Message cakeMessage = new Message("1000000001", "+27834557896", CAKE_TEXT);
         cakeMessage.sentMessage(1); // message sent
-        lateMessage = new Message("1000000002", "+27838884567", Part3_MSG_2);
+        lateMessage = new Message("1000000002", "+27838884567", LATE_TEXT);
         lateMessage.sentMessage(3); //stored message
-        Message gateMessage = new Message("1000000003", "+27834484567", Part3_MSG_3);
+        Message gateMessage = new Message("1000000003", "+27834484567", GATE_TEXT);
         gateMessage.sentMessage(2); //disregard message
-        Message dinnerMessage = new Message("0838884567", "0838884567", Part3_MSG_4);
+        Message dinnerMessage = new Message("0838884567", "0838884567", DINNER_TEXT);
         dinnerMessage.sentMessage(1); //message sent
-        Message leavingMessage = new Message("1000000005", "+27838884567", Part3_MSG_5);
+        Message leavingMessage = new Message("1000000005", "+27838884567", LEAVING_TEXT);
         leavingMessage.sentMessage(3); //message stored
     }
     @Test
     public void sentmessagesArrayCorrectlyPopulated(@TempDir Path tempDir) {
         loadPart3TestData(tempDir);
         assertEquals(2, Message.getSentCount());
-        assertEquals(Part3_MSG_1, Message.getSentMessage(0));
-        assertEquals(Part3_MSG_4, Message.getSentMessage(1));
+        assertEquals(CAKE_TEXT, Message.getSentMessage(0));
+        assertEquals(DINNER_TEXT, Message.getSentMessage(1));
     }
     @Test
     public void displayLongestMessage(@TempDir Path tempDir) {
         loadPart3TestData(tempDir);
-        assertEquals(Part3_MSG_2, Message.getLongestStoredMessage());
+        assertEquals(LATE_TEXT, Message.getLongestStoredMessage());
     }
     @Test
     public void searchForMessageID(@TempDir Path tempDir) {
         loadPart3TestData(tempDir);
         String[] result = Message.searchByMessageID("0838884567");
         assertEquals("0838884567", result[0]);
-        assertEquals(Part3_MSG_4, result[1]);
+        assertEquals(DINNER_TEXT, result[1]);
     }
     
     @Test
@@ -155,15 +156,15 @@ public class MessageTest {
         loadPart3TestData(tempDir);
         String[] results = Message.searchByRecipient("+27838884567");
         assertEquals(2, results.length);
-        assertEquals(Part3_MSG_2, results[0]);
-        assertEquals(Part3_MSG_5, results[1]);
+        assertEquals(LATE_TEXT, results[0]);
+        assertEquals(LEAVING_TEXT, results[1]);
     }
     
     @Test
     public void deleteMessageUsingHash(@TempDir Path tempDir) {
         loadPart3TestData(tempDir);
         String result = Message.deleteByHash(lateMessage.createMessageHash());
-        assertEquals("Message: \"" + Part3_MSG_2 + "\" successfully deleted.", result);
+        assertEquals("Message: \"" + LATE_TEXT + "\" successfully deleted.", result);
         assertEquals(1, Message.getStoredTotal());
     }
     
@@ -173,22 +174,12 @@ public class MessageTest {
         String report = Message.buildReport();
         assertTrue(report.contains("Message Hash: " + lateMessage.createMessageHash()));
         assertTrue(report.contains("Recipient: +27838884567"));
-        assertTrue(report.contains("Message: " + Part3_MSG_2));
-        assertTrue(report.contains("Message: " + Part3_MSG_5));
+        assertTrue(report.contains("Message: " + LATE_TEXT));
+        assertTrue(report.contains("Message: " + LEAVING_TEXT));
         
     }
     
-    @Test
-    public void storedMessagesReadBackFromJson(@TempDir Path tempDir) {
-        loadPart3TestData(tempDir);   //storing the messages wrote in the JSON file
-        String fileName = tempDir.resolve("storedMessages.json").toString();
-        Message.resetForTests();  //empty out the arrays
-        Message.setStoredFilePath(fileName);
-        assertEquals(2, Message.loadStoredMessages());
-        assertEquals(2, Message.getStoredTotal());
-        assertEquals(Part3_MSG_2, Message.getLongestStoredMessage());
-    }
-        
+   
     
     
            

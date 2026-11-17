@@ -29,7 +29,7 @@ public class Message {
    private static String storedJson = "";
    private static int storedCount = 0;
    
-   // ---- Part 3: plain arrays (no ArrayList) ----
+  
    private static final int MAX_MESSAGES = 100;
    private static String storedFilePath = "storedMessages.json";
    private static String[] sentMessages = new String[MAX_MESSAGES];        // text of every sent message
@@ -37,7 +37,7 @@ public class Message {
    private static String[] storedMessages = new String[MAX_MESSAGES];      // text of every stored message
    private static String[] messageHashes = new String[MAX_MESSAGES];       // hash of every message
    private static String[] messageIDs = new String[MAX_MESSAGES];          // ID of every message
-   // parallel arrays: same index = same message, lets the searches link ID, hash, recipient and text
+   
    private static String[] messageRecipients = new String[MAX_MESSAGES];
    private static String[] messageTexts = new String[MAX_MESSAGES];
    private static String[] messageFlags = new String[MAX_MESSAGES];        // "Sent", "Stored" or "Disregard"
@@ -230,12 +230,13 @@ public class Message {
         return true;
     }
     
-    /* Reads storedMessages.json into the arrays (call once when the program starts). 
-       Reference: org.json JSONArray/JSONObject - https://github.com/stleary/JSON-java
-       (replace/add the exact page or video you followed so the code is attributed) */
+    
     public static int loadStoredMessages(){
         int loaded = 0;
         Path file = Paths.get(storedFilePath);
+        if (!Files.exists(file)) {
+            return 0; // no file yet: start with empty arrays
+        }
         try {
             InputStream input = Files.newInputStream(file);
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -255,7 +256,7 @@ public class Message {
                 }
             }
         } catch (Exception e) {
-            // no file yet (or unreadable): start with empty arrays
+            System.out.println("Could not read " + storedFilePath + ": " + e);
         }
         return loaded;
     }
@@ -271,7 +272,7 @@ public class Message {
         return output.equals("") ? "No stored messages." : output;
     }
     
-    // ---- Stored Messages menu features ----
+    
     public static String displaySendersAndRecipients(String sender){ // a
         String output = "";
         for (int i = 0; i < recordedCount; i++) {
